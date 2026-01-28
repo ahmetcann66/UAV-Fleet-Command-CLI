@@ -1,0 +1,30 @@
+name: C Build (UAV CLI)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+
+    steps:
+    
+    - name: Kodu Cek (Checkout)
+      uses: actions/checkout@v4
+
+   
+    - name: Derle (Compile)
+      run: gcc main.c -o uav-app
+
+    
+    - name: Build Kontrolü
+      run: |
+        if [ -f "./uav-app" ]; then
+          echo "Başarıyla derlendi! ✅"
+        else
+          echo "Derleme başarısız! ❌"
+          exit 1
+        fi
