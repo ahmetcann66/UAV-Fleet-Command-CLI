@@ -9,6 +9,7 @@ It allows the operator to command a swarm of UAVs (Unmanned Aerial Vehicles) sim
 
 ## 🚀 Features
 * **Multi-UAV Architecture:** Manage a mixed fleet containing **TB2**, **AKINCI**, and **AKSUNGUR** models simultaneously.
+* **🛡️ Active Collision Avoidance:** Implemented a **"Look-Ahead" algorithm** that scans the fleet's altitude data before any movement, preventing mid-air collisions.
 * **Real-Time Telemetry:** Monitor distinct fuel levels, altitude, and status flags for each unit.
 * **Fleet Management Core:** Switch between active UAVs using a centralized command dashboard.
 * **Safety Protocols:** Logic safeguards against crashes (min altitude limits) and fuel exhaustion.
@@ -16,8 +17,9 @@ It allows the operator to command a swarm of UAVs (Unmanned Aerial Vehicles) sim
 
 ## 🛠️ Technical Implementation
 This project demonstrates key Computer Engineering and Embedded Systems concepts:
+* **Defensive Programming:** The system uses a `carpismaVarmi()` function to validate commands *before* execution, ensuring flight safety.
 * **Data Structures:** Usage of `struct` arrays to handle multi-object states (Fleet Logic).
-* **Memory Management:** Efficient handling of UAV instances.
+* **Memory Management:** Efficient handling of UAV instances via global structures.
 * **Control Flow:** Switch-case driven menu system simulating an avionics interface.
 * **Modular Design:** Helper functions for display logic (`filoDurumu`) and flight mechanics.
 
@@ -42,19 +44,20 @@ uav_system.exe
 📊 Simulation Preview
 Plaintext
 === UAV FLEET COMMAND SYSTEM ===
-Selected UAV: AKINCI
+Selected UAV: AKINCI (Altitude: 4000m)
 --------------------------------
 1. Switch UAV
-2. Status Report (Current Unit)
-3. Ascend (+1000m, -5 fuel)
-4. Descend (-1000m, -5 fuel)
+2. Status Report
+3. Ascend (+1000m)
 ...
+!!! CRITICAL WARNING: TB2 is at 5000m! Collision Risk Detected! !!!
+Error: Route occupied! Ascent cancelled.
 🗺️ Roadmap
 [x] Multi-UAV Architecture (Struct Arrays)
 
 [x] Basic Flight Controls & Telemetry
 
-[ ] Collision Avoidance System: Algorithm to prevent UAVs from sharing the same altitude coordinates.
+[x] Collision Avoidance System: Algorithm to prevent UAVs from sharing the same altitude coordinates.
 
 [ ] Data Logging: Saving flight logs to .txt files (Black Box simulation).
 
