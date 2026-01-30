@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h> 
 
 #ifdef _WIN32
 #include <windows.h>
@@ -15,6 +16,7 @@ struct IHA {
 
 struct IHA filo[3];
 int seciliIHA = 0; 
+int hedefKilitli = 0; 
 
 void ekranTemizle() {
 #ifdef _WIN32
@@ -49,47 +51,82 @@ int carpismaVarmi(int hedefIrtifa) {
     return 0;
 }
 
+
+void radarTaramasi() {
+    if (filo[seciliIHA].irtifa == 0) {
+        printf("\nUYARI: Radar yer seviyesinde calisamaz! Once havalanin.\n");
+        return;
+    }
+
+    printf("\n[RADAR] Bolge taraniyor... Sinyal araniyor...\n");
+    
+    
+    int sans = rand() % 2; 
+
+    if (sans == 1) {
+        hedefKilitli = 1;
+        printf("!!! TESPIT: Dusman zirhli araci tespit edildi! Kordinatlar kilitlendi. !!!\n");
+        printf("[SYSTEM] ATIS SISTEMI AKTIF. \n");
+    } else {
+        hedefKilitli = 0;
+        printf("[RADAR] Bolge temiz. Tehdit unsuru bulunamadi.\n");
+    }
+}
+
 void atisYap() 
 {    
+    
     if (filo[seciliIHA].irtifa == 0) {
         printf("\nUYARI: Guvenlik kilidi devrede! Yerdeyken atis yapilamaz.\n");
-        printf("Once yukselmeniz gerekiyor.\n");
+        return;
+    }
+
+    
+    if (hedefKilitli == 0) {
+        printf("\n[HATA] HEDEF KILITLI DEGIL! Atis yapilamaz.\n");
+        printf("Once '8' tusuna basarak Radar Taramasi yapin.\n");
         return;
     }
 
     if (seciliIHA == 0) {
         if (filo[0].muhimmat > 0) {
-            printf("\n*** HEDEF KILITLENDI... ***\n");
-            printf(">>> %s, 1 adet MAM-L fuzesi atisladi! HEDEF VURULDU. <<<\n", filo[seciliIHA].Model);
+            printf("\n*** HEDEF KILITLENDI... FUSELAGE RELEASED ***\n");
+            printf(">>> %s, 1 adet MAM-L fuzesi atisladi! HEDEF IMHA EDILDI. <<<\n", filo[seciliIHA].Model);
             filo[0].muhimmat--; 
             printf("Kalan Muhimmat: %d\n", filo[0].muhimmat);
         } else {
-            printf("\n!!! UYARI: Muhimmat tukendi! Atis yapilamaz. Usse donun. !!!\n");
+            printf("\n!!! UYARI: Muhimmat tukendi! !!!\n");
         }
     }
     else if (seciliIHA == 1) {
         if (filo[1].muhimmat > 0) {
-            printf("\n*** HEDEF KILITLENDI... ***\n");
-            printf(">>> %s, 1 adet MAM-C fuzesi atisladi! HEDEF VURULDU. <<<\n", filo[seciliIHA].Model);
+            printf("\n*** HEDEF KILITLENDI... FUSELAGE RELEASED ***\n");
+            printf(">>> %s, 1 adet MAM-C fuzesi atisladi! HEDEF IMHA EDILDI. <<<\n", filo[seciliIHA].Model);
             filo[1].muhimmat--; 
             printf("Kalan Muhimmat: %d\n", filo[1].muhimmat);
         } else {
-            printf("\n!!! UYARI: Muhimmat tukendi! Atis yapilamaz. Usse donun. !!!\n");
+            printf("\n!!! UYARI: Muhimmat tukendi! !!!\n");
         }
     }
     else if (seciliIHA == 2) {
         if (filo[2].muhimmat > 0) {
-            printf("\n*** HEDEF KILITLENDI... ***\n");
-            printf(">>> %s, 1 adet L-UMTAS Lazer gudumlu tank savar fuzesi atisladi! HEDEF VURULDU. <<<\n", filo[seciliIHA].Model);
+            printf("\n*** HEDEF KILITLENDI... FUSELAGE RELEASED ***\n");
+            printf(">>> %s, 1 adet L-UMTAS fuzesi atisladi! HEDEF IMHA EDILDI. <<<\n", filo[seciliIHA].Model);
             filo[2].muhimmat--; 
             printf("Kalan Muhimmat: %d\n", filo[2].muhimmat);
         } else {
-            printf("\n!!! UYARI: Muhimmat tukendi! Atis yapilamaz. Usse donun. !!!\n");
+            printf("\n!!! UYARI: Muhimmat tukendi! !!!\n");
         }
     }
+
+    
+    hedefKilitli = 0; 
+    printf("[BILGI] Hedef imha edildi. Radar sifirlandi.\n");
 }
 
 int main() {
+    
+    srand(time(NULL));
     
     strcpy(filo[0].Model, "TB2");
     filo[0].yakit = 100;
@@ -109,8 +146,12 @@ int main() {
     int secim;
 
     while (1) {
-        printf("\n=== UAV FLEET COMMAND SYSTEM (V3.0) ===\n");
-        printf("Secili IHA: %s (Irtifa: %dm | Muhimmat: %d)\n", filo[seciliIHA].Model, filo[seciliIHA].irtifa, filo[seciliIHA].muhimmat);
+        printf("\n=== UAV FLEET COMMAND SYSTEM (V3.1 - ISR UPDATE) ===\n");
+       
+        char durum[20];
+        if(hedefKilitli) strcpy(durum, "[KILITLI]"); else strcpy(durum, "[TARANIYOR]");
+
+        printf("Secili IHA: %s (Irtifa: %dm | Muhimmat: %d) %s\n", filo[seciliIHA].Model, filo[seciliIHA].irtifa, filo[seciliIHA].muhimmat, durum);
         printf("---------------------------------------\n");
         printf("1. IHA Degistir\n");
         printf("2. Durum Raporu\n");
@@ -118,7 +159,8 @@ int main() {
         printf("4. Alcal (-1000m, -5 yakit)\n");
         printf("5. ATIS YAP (Fire Mission) \n"); 
         printf("6. Tum Filo Durumu\n");
-        printf("7. Tam Bakim (Yakit + Muhimmat Fulle)\n");
+        printf("7. Tam Bakim (Logistics)\n");
+        printf("8. RADAR TARAMASI (Target Acquisition) [YENI]\n");
         printf("0. Cikis\n");
         printf("Seciminiz: ");
 
@@ -128,7 +170,7 @@ int main() {
             case 1: 
                 printf("\nIHA Sec:\n");
                 for (int i = 0; i < 3; i++) {
-                    printf("%d. %s (Yakit:%%%d, Irtifa:%dm)\n", i+1, filo[i].Model, filo[i].yakit, filo[i].irtifa);
+                    printf("%d. %s\n", i+1, filo[i].Model);
                 }
                 printf("Seciminiz (1-3): ");
                 int ihaSec;
@@ -136,17 +178,19 @@ int main() {
                 if (ihaSec >= 1 && ihaSec <= 3) {
                     seciliIHA = ihaSec - 1;
                     printf("%s secildi!\n", filo[seciliIHA].Model);
+                    hedefKilitli = 0; 
                 } else {
                     printf("Hatali secim!\n");
                 }
                 break;
 
             case 2: 
-                printf("\n--- %s OPERASYONEL DURUM ---\n", filo[seciliIHA].Model);
+                printf("\n--- %s DETAYLI RAPOR ---\n", filo[seciliIHA].Model);
                 printf("Model: %s\n", filo[seciliIHA].Model);
                 printf("Yakit: %%%d\n", filo[seciliIHA].yakit);
                 printf("Irtifa: %d m\n", filo[seciliIHA].irtifa);
-                printf("Silah Yuku: %d adet MAM-L\n", filo[seciliIHA].muhimmat);
+                printf("Mühimmat: %d\n", filo[seciliIHA].muhimmat);
+                printf("Radar Durumu: %s\n", hedefKilitli ? "HEDEF KILITLENDI" : "BEKLEMEDE");
                 break;
 
             case 3: 
@@ -155,12 +199,12 @@ int main() {
                     if (carpismaVarmi(hedefIrtifa) == 0) {
                         filo[seciliIHA].irtifa = hedefIrtifa;
                         filo[seciliIHA].yakit -= 5;
-                        printf("%s yukselis basarili. Yeni irtifa: %d m\n", filo[seciliIHA].Model, filo[seciliIHA].irtifa);
+                        printf("Yukselis basarili. Irtifa: %d m\n", filo[seciliIHA].irtifa);
                     } else {
-                        printf("HATA: Rota dolu! Yukselis iptal edildi.\n");
+                        printf("HATA: Rota dolu!\n");
                     }
                 } else {
-                    printf("YETERSIZ YAKIT! Yukselemezsiniz.\n");
+                    printf("YETERSIZ YAKIT!\n");
                 }
                 break;
 
@@ -170,9 +214,9 @@ int main() {
                     if (carpismaVarmi(hedefIrtifa) == 0) {
                         filo[seciliIHA].irtifa = hedefIrtifa;
                         filo[seciliIHA].yakit -= 5;
-                        printf("%s alcalis basarili. Yeni irtifa: %d m\n", filo[seciliIHA].Model, filo[seciliIHA].irtifa);
+                        printf("Alcalis basarili. Irtifa: %d m\n", filo[seciliIHA].irtifa);
                     } else {
-                        printf("HATA: Rota dolu! Alcalis iptal edildi.\n");
+                        printf("HATA: Rota dolu!\n");
                     }
                 } else {
                     printf("Zaten yerdesiniz!\n");
@@ -195,6 +239,11 @@ int main() {
                     else filo[i].muhimmat = 6;          
                 }
                 printf("Tum filonun YAKIT ve MUHIMMAT ikmali tamamlandi!\n");
+                hedefKilitli = 0;
+                break;
+
+            case 8: 
+                radarTaramasi();
                 break;
 
             case 0: 
