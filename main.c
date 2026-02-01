@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <time.h> 
+#include <time.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -16,7 +16,7 @@ struct IHA {
 
 struct IHA filo[3];
 int seciliIHA = 0; 
-int hedefKilitli = 0; 
+int hedefKilitli = 0;
 
 void ekranTemizle() {
 #ifdef _WIN32
@@ -24,6 +24,28 @@ void ekranTemizle() {
 #else
     system("clear");
 #endif
+}
+
+void ihaSekliCiz(int modelIndex) {
+    printf("\n");
+    if (modelIndex == 0) {
+        printf("      __!__\n");
+        printf("-----o(.)o-----\n");
+        printf("     TB2-BAY\n");
+    } 
+    else if (modelIndex == 1) {
+        printf("       | \n");
+        printf("   ---=|=---\n");
+        printf("    \\_|^|_/    \n");
+        printf("    AKINCI-TIHA\n");
+    } 
+    else if (modelIndex == 2) {
+        printf("    /-----\\ \n");
+        printf("---(  O.O  )---\n");
+        printf("    \\_____/    \n");
+        printf("   AKSUNGUR-TW\n");
+    }
+    printf("\n");
 }
 
 void filoDurumu(int size) {
@@ -51,7 +73,6 @@ int carpismaVarmi(int hedefIrtifa) {
     return 0;
 }
 
-
 void radarTaramasi() {
     if (filo[seciliIHA].irtifa == 0) {
         printf("\nUYARI: Radar yer seviyesinde calisamaz! Once havalanin.\n");
@@ -59,7 +80,6 @@ void radarTaramasi() {
     }
 
     printf("\n[RADAR] Bolge taraniyor... Sinyal araniyor...\n");
-    
     
     int sans = rand() % 2; 
 
@@ -75,13 +95,11 @@ void radarTaramasi() {
 
 void atisYap() 
 {    
-    
     if (filo[seciliIHA].irtifa == 0) {
         printf("\nUYARI: Guvenlik kilidi devrede! Yerdeyken atis yapilamaz.\n");
         return;
     }
 
-    
     if (hedefKilitli == 0) {
         printf("\n[HATA] HEDEF KILITLI DEGIL! Atis yapilamaz.\n");
         printf("Once '8' tusuna basarak Radar Taramasi yapin.\n");
@@ -119,13 +137,11 @@ void atisYap()
         }
     }
 
-    
     hedefKilitli = 0; 
     printf("[BILGI] Hedef imha edildi. Radar sifirlandi.\n");
 }
 
 int main() {
-    
     srand(time(NULL));
     
     strcpy(filo[0].Model, "TB2");
@@ -146,8 +162,8 @@ int main() {
     int secim;
 
     while (1) {
-        printf("\n=== UAV FLEET COMMAND SYSTEM (V3.1 - ISR UPDATE) ===\n");
-       
+        printf("\n=== UAV FLEET COMMAND SYSTEM (V3.2 - VISUAL UPDATE) ===\n");
+        
         char durum[20];
         if(hedefKilitli) strcpy(durum, "[KILITLI]"); else strcpy(durum, "[TARANIYOR]");
 
@@ -160,7 +176,7 @@ int main() {
         printf("5. ATIS YAP (Fire Mission) \n"); 
         printf("6. Tum Filo Durumu\n");
         printf("7. Tam Bakim (Logistics)\n");
-        printf("8. RADAR TARAMASI (Target Acquisition) [YENI]\n");
+        printf("8. RADAR TARAMASI (ISR Scan)\n");
         printf("0. Cikis\n");
         printf("Seciminiz: ");
 
@@ -178,6 +194,7 @@ int main() {
                 if (ihaSec >= 1 && ihaSec <= 3) {
                     seciliIHA = ihaSec - 1;
                     printf("%s secildi!\n", filo[seciliIHA].Model);
+                    ihaSekliCiz(seciliIHA);
                     hedefKilitli = 0; 
                 } else {
                     printf("Hatali secim!\n");
@@ -185,6 +202,7 @@ int main() {
                 break;
 
             case 2: 
+                ihaSekliCiz(seciliIHA);
                 printf("\n--- %s DETAYLI RAPOR ---\n", filo[seciliIHA].Model);
                 printf("Model: %s\n", filo[seciliIHA].Model);
                 printf("Yakit: %%%d\n", filo[seciliIHA].yakit);
