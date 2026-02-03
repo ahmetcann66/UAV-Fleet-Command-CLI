@@ -1,161 +1,183 @@
-Hata görselini yakaladım komutanım! 🚨
+🚁 UAV Fleet Command System (CLI)
+V3.3 – BLACK BOX EDITION
+<div align="center"> <img src="https://dummyimage.com/1200x420/0b0f19/ffffff&text=UAV+Fleet+Command+System+%7C+V3.3+Black+Box+Edition" width="100%" />
 
-Mermaid diyagramında "Lexical error" vermesinin sebebi, kod bloğunu kapatan tırnakların (```) arada kaynamış olması veya bir alt satıra geçmemesi. Şemayı düzeltip, istediğin o havalı Teknoloji Rozetlerini (Badges) ve Görsel Düzeni ekleyerek sana V3.3 Final (Fix) versiyonunu hazırladım.
+<br/><br/>
 
-Bunu yapıştırınca hem hata gidecek hem de o tablo ve rozetler efsane duracak.
 
-📄 README.md (Kopyala/Yapıştır - Düzeltilmiş Versiyon)
-Markdown
-# 🚁 UAV Fleet Command System (CLI)
 
-<div align="center">
-  <img src="[https://dummyimage.com/1200x400/000/fff&text=UAV+Fleet+Command+System+-+V3.3](https://dummyimage.com/1200x400/000/fff&text=UAV+Fleet+Command+System+-+V3.3)" alt="Project Banner" width="100%" />
-  <br/><br/>
 
-  ![Language](https://img.shields.io/badge/Language-C-blue?style=for-the-badge&logo=c)
-  ![Platform](https://img.shields.io/badge/Platform-Windows%20%2F%20Linux-lightgrey?style=for-the-badge&logo=linux)
-  ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-  ![Version](https://img.shields.io/badge/Version-V3.3%20(Black%20Box)-orange?style=for-the-badge)
+
+
+
+
+
+
 </div>
+📌 Overview
 
+UAV Fleet Command System is a C-based command-line simulation that models the core operational logic of a modern Ground Control Station (GCS) used in military UAV operations.
 
+The project focuses on decision-making, safety interlocks, mission flow, and logging, rather than graphics — mirroring real-world defense and embedded software systems.
 
-## 🎯 Project Purpose
-**UAV Fleet Command System** is a sophisticated C-based simulation designed to demonstrate the engineering logic behind a real-world **Ground Control Station (GCS)**. The primary goal is to simulate the tactical management of a mixed UAV swarm (**TB2, AKINCI, AKSUNGUR**) in a high-stakes terminal environment.
+🎯 Project Objectives
 
-It goes beyond simple flight simulation by implementing critical aerospace software functions:
-* **📼 Black Box (Flight Recorder):** Persistent logging of mission telemetry to local files.
-* **📡 ISR & Radar Logic:** Stochastic target acquisition and locking mechanisms.
-* **🛡️ Collision Avoidance:** Active altitude scanning algorithms to prevent mid-air crashes.
-* **🎯 Fire Control (FCS):** Weapon release protocols with embedded safety interlocks.
+Simulate multi-UAV fleet management
 
----
+Demonstrate ISR, Fire Control & Safety logic
 
-## 🛠️ Technologies & Tools Used
+Implement Black Box–style mission logging
 
-This project is built using core system programming tools to ensure performance and reliability.
+Apply defensive programming principles
 
-| Category | Technologies |
-| :--- | :--- |
-| **Core Language** | ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) |
-| **Compiler** | ![GCC](https://img.shields.io/badge/gcc-%23FFD43B.svg?style=for-the-badge&logo=gnu&logoColor=222222) |
-| **Version Control** | ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) |
-| **Documentation** | ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white) ![Mermaid JS](https://img.shields.io/badge/Mermaid-FF3E00?style=for-the-badge&logo=mermaid&logoColor=white) |
-| **Environment** | ![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white) ![Linux Shell](https://img.shields.io/badge/Shell_Script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white) |
+Serve as a portfolio-grade defense software project
 
----
+🧠 Simulated UAV Platforms
+UAV	Role
+Bayraktar TB2	Tactical ISR / Precision Strike
+AKINCI TİHA	Heavy Strike / Deep Mission
+AKSUNGUR	Long-Endurance ISR
+🧩 Core Features
 
-## 📐 System Logic & Architecture
+📡 ISR & Radar Scan System
 
-The following diagram illustrates the core decision-making loop of the software, highlighting the **Safety Interlocks** and the **Data Logging** layer.
+🎯 Fire Control System (FCS)
 
-```mermaid
+🛡️ Collision Avoidance Logic
+
+⛔ Safety Interlocks
+
+📼 Black Box (Flight Recorder)
+
+🔁 Real-time UAV Switching
+
+⛽ Fuel & Ammunition Management
+
+🛠️ Technology Stack
+Category	Technologies
+Language	C
+Compiler	GCC
+Platform	Windows / Linux
+Version Control	Git, GitHub
+Documentation	Markdown
+Diagramming	Mermaid
+📐 System Architecture & Decision Flow
 graph TD
-    Start((Start)) --> Menu{Main Menu}
-    
-    %% Radar & ISR Logic
-    Menu -- "8. Radar Scan" --> Radar[Stochastic Sensor Scan]
-    Radar -- Target Found --> Lock[State: TARGET LOCKED]
-    Radar -- Scan Empty --> Unlock[State: NO TARGET]
-    
-    %% Fire Control Logic
-    Menu -- "5. Fire Mission" --> CheckLock{Target Locked?}
-    CheckLock -- YES --> Fire[Fire Missile & Update Ammo]
-    CheckLock -- NO --> Deny[⛔ Safety Lock Engaged]
-    
-    %% Navigation & Collision Logic
-    Menu -- "3/4. Altitude" --> ColCheck{Collision Check}
-    ColCheck -- Safe --> Move[Update Altitude & Fuel]
-    ColCheck -- Risk --> Block[⛔ Collision Warning]
-    
-    %% Logging Layer
-    Fire -.-> Log[💾 Write to ucus_kayitlari.txt]
+    Start((System Start)) --> Menu{Main Menu}
+
+    Menu -- Radar Scan --> Radar[ISR Sensor Scan]
+    Radar -- Target Found --> Lock[TARGET LOCKED]
+    Radar -- No Signal --> NoTarget[NO TARGET]
+
+    Menu -- Fire Mission --> CheckLock{Target Locked?}
+    CheckLock -- YES --> Fire[Missile Fired]
+    CheckLock -- NO --> Safety[⛔ Safety Interlock]
+
+    Menu -- Altitude Change --> Collision{Collision Risk?}
+    Collision -- SAFE --> Move[Altitude Updated]
+    Collision -- RISK --> Abort[⛔ Maneuver Blocked]
+
+    Fire -.-> Log[📼 Black Box Log]
     Move -.-> Log
     Lock -.-> Log
-    
-    Menu -- "0. Exit" --> Stop((Terminate))
-    
-    style Log fill:#f9f,stroke:#333,stroke-width:2px,color:#000
-    style Deny fill:#ffcccc,stroke:#ff0000,stroke-width:2px
-    style Block fill:#ffcccc,stroke:#ff0000,stroke-width:2px
+
+    Menu -- Exit --> End((Shutdown))
+
+    style Log fill:#e6e6fa,stroke:#333,stroke-width:2px
+    style Safety fill:#ffcccc,stroke:#ff0000,stroke-width:2px
+    style Abort fill:#ffcccc,stroke:#ff0000,stroke-width:2px
+
+📂 Project Structure
+UAV-Fleet-Command-CLI/
+│
+├── main.c                # Core application logic
+├── ucus_kayitlari.txt    # Black Box flight logs (auto-generated)
+├── README.md             # Project documentation
+├── LICENSE               # MIT License
+
 ⚙️ Installation
 Prerequisites
-You need a standard C compiler (like GCC) installed on your system.
 
-1. Clone the Repository
-Open your terminal and clone the project files:
+GCC or any standard C compiler
 
-Bash
+Windows or Linux terminal
+
+Clone Repository
 git clone https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git
 cd UAV-Fleet-Command-CLI
-2. Compile the Code
-Compile the source code using GCC:
 
-Bash
+Compile
 gcc main.c -o uav_system
+
 🎮 Usage
-Running the Application
-For Windows:
+Run Application
 
-Bash
+Windows
+
 uav_system.exe
-For Linux / macOS:
 
-Bash
+
+Linux / macOS
+
 ./uav_system
-Controls
-The system uses a numeric menu interface.
 
-1 Switch UAV: Cycle control between TB2, AKINCI, and AKSUNGUR.
+🎛️ Control Menu
+Key	Function
+1	Switch UAV
+2	Status Report
+3	Ascend
+4	Descend
+5	Fire Mission
+8	Radar Scan (ISR)
+0	Exit System
+🖥️ Sample CLI Output
+=== UAV FLEET COMMAND SYSTEM | V3.3 BLACK BOX ===
 
-3 Ascend: Increase altitude by 1000m (Consumes Fuel).
-
-5 FIRE MISSION: Launch ammunition (Requires Radar Lock).
-
-8 RADAR SCAN: Scan the sector for targets (Required before firing).
-
-0 Exit: Close the simulation and save the Black Box logs.
-
-🖥️ Example Output / Screenshot
-When you run the system, the CLI provides visual feedback (ASCII Art) and real-time telemetry.
-
-Plaintext
-=== UAV FLEET COMMAND SYSTEM (V3.3 - BLACK BOX) ===
-
-       | 
+       |
    ---=|=---
-    \_|^|_/    
-    AKINCI-TIHA
+    \_|^|_/
+     AKINCI
 
-Selected UAV: AKINCI (Altitude: 5000m | Ammo: 8) [KILITLI]
----------------------------------------
-1. IHA Degistir
-2. Durum Raporu
-...
-8. RADAR TARAMASI (ISR Scan)
+UAV: AKINCI | ALT: 5000m | AMMO: 8 | STATUS: LOCKED
+-----------------------------------------------
+[RADAR] Target detected and locked.
+[FIRE] MAM-C missile launched.
+[HIT] Target neutralized.
 
-Seciminiz: 8
+📼 Black Box Log Example
 
-[RADAR] Bolge taraniyor... Sinyal araniyor...
-!!! TESPIT: Dusman zirhli araci tespit edildi! Kordinatlar kilitlendi. !!!
+ucus_kayitlari.txt
 
-Seciminiz: 5
+[03-02-2026 14:30:10] SYSTEM STARTED
+[03-02-2026 14:31:05] RADAR TARGET LOCKED (AKINCI)
+[03-02-2026 14:31:12] FIRE MISSION SUCCESSFUL
 
-*** HEDEF KILITLENDI... FUSELAGE RELEASED ***
->>> AKINCI, 1 adet MAM-C fuzesi atisladi! HEDEF IMHA EDILDI. <<<
-📼 Black Box Log Output
-Content of the automatically generated ucus_kayitlari.txt:
+🛣️ Roadmap (Next Versions)
 
-Plaintext
-[03-02-2026 14:30:10] [SISTEM] UAV Fleet Command System V3.3 Baslatildi.
-[03-02-2026 14:31:05] [RADAR] AKINCI RADAR HEDEF TESPIT ETTI.
-[03-02-2026 14:31:12] [ATIS] AKINCI MAM-C ATISLADI. Hedef Vuruldu.
+🔄 V4.0 Modular Code Architecture
+
+🛰️ Sensor Fusion Logic
+
+📡 Data-Link Simulation
+
+🧠 AI-Based Target Priority
+
+🖥️ GUI (Optional)
+
+🤝 Contribution
+
+Contributions, suggestions, and improvements are welcome.
+Fork the repository and submit a pull request.
+
 👨‍💻 Author
 <div align="center">
 
-Ahmet Can
+Ahmet Can BOZKURT
+🎓 Information Systems & Technologies – 3rd Year
+🛡️ Defense, UAV & Embedded Systems Enthusiast
 
 </div>
-
 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
+This project is licensed under the MIT License.
+See the LICENSE file for details.
