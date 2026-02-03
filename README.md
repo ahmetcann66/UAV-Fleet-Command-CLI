@@ -1,56 +1,119 @@
-Harika! Projen V3.3 seviyesine ulaştı. 📼 Artık sadece bir simülasyon değil, verileri kaydeden gerçek bir GCS (Ground Control Station) yazılımı oldu.
-
-README dosyanı; yeni Kara Kutu (Black Box) özelliğini, Dosya İşlemlerini (File I/O) ve V3.3 sürüm notlarını içerecek şekilde güncelledim. Ayrıca Roadmap kısmındaki o kutucuğu da yeşil tikle işaretledim! ✅
-
-Aşağıdaki metni kopyala, README.md dosyanın içindekileri sil ve bunu yapıştır.
-
-Markdown
 # 🚁 UAV Fleet Command System (CLI)
 
-![C Build & Check](https://github.com/ahmetcann66/UAV-Fleet-Command-CLI/actions/workflows/ci.yml/badge.svg) ![Language](https://img.shields.io/badge/Language-C-blue) ![Platform](https://img.shields.io/badge/Platform-Windows%20%2F%20Linux-lightgrey) ![License](https://img.shields.io/badge/License-MIT-green)
+<div align="center">
+  <img src="https://dummyimage.com/1200x400/000/fff&text=UAV+Fleet+Command+System+-+V3.3" alt="Project Banner" width="100%" />
+  <br/><br/>
 
-## 📖 Overview
-**UAV Fleet Command System** is a C-based simulation of a **Ground Control Station (GCS)** logic. This project focuses on **fleet management algorithms**, **telemetry tracking**, **collision avoidance**, and **tactical fire control systems**.
+  ![Language](https://img.shields.io/badge/Language-C-blue?style=for-the-badge&logo=c)
+  ![Platform](https://img.shields.io/badge/Platform-Windows%20%2F%20Linux-lightgrey?style=for-the-badge&logo=linux)
+  ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+  ![Version](https://img.shields.io/badge/Version-V3.3%20(Black%20Box)-orange?style=for-the-badge)
+</div>
 
-It allows the operator to command a swarm of UAVs (Unmanned Aerial Vehicles) simultaneously via a terminal interface, monitoring critical parameters like fuel, altitude, ammunition, and operational status for multiple units (TB2, AKINCI, AKSUNGUR).
+---
 
-## 🚀 Features (V3.3 - Black Box Update)
-* **📼 Flight Data Recorder (Black Box):** Automatically logs all mission-critical events (takeoffs, firing sequences, errors, radar locks) to a persistent `ucus_kayitlari.txt` file with precise timestamps.
-* **📡 Radar & ISR Module:** Implements a **"Search & Lock"** mechanic. Operators must detect targets via radar scans before the Fire Control System disengages its safety lock.
-* **Multi-UAV Architecture:** Manage a mixed fleet containing **TB2**, **AKINCI**, and **AKSUNGUR** models simultaneously.
-* **🎨 Visual Interface:** ASCII Art representations of each UAV model directly in the terminal dashboard.
-* **🎯 Fire Control System (FCS):** Model-specific armament logic (MAM-L, MAM-C, L-UMTAS).
-* **🛡️ Active Collision Avoidance:** **"Look-Ahead" algorithm** that scans the fleet's altitude data before any movement, preventing mid-air collisions.
-* **🔒 Safety Interlocks:** Ground safety switches prevent firing while at 0m altitude or without a confirmed target lock.
+## 🎯 Project Purpose
+**UAV Fleet Command System** is a sophisticated C-based simulation designed to demonstrate the engineering logic behind a real-world **Ground Control Station (GCS)**. The primary goal is to simulate the tactical management of a mixed UAV swarm (**TB2, AKINCI, AKSUNGUR**) in a high-stakes terminal environment.
 
-## 🛠️ Technical Implementation
-This project demonstrates key Computer Engineering and Embedded Systems concepts:
-* **File I/O & Persistence:** Uses standard C library (`fopen`, `fprintf`) to append mission data to a text file, ensuring data survival after program termination.
-* **Stochastic Algorithms:** Uses `rand()` and `<time.h>` to simulate unpredictable battlefield sensor data.
-* **Defensive Programming:** The system uses a `carpismaVarmi()` function to validate commands *before* execution.
-* **State Management:** Tracks complex states (Altitude, Fuel, Ammo, Lock Status) for multiple objects.
+It goes beyond simple flight simulation by implementing critical aerospace software functions:
+* **📼 Black Box (Flight Recorder):** Persistent logging of mission telemetry to local files.
+* **📡 ISR & Radar Logic:** Stochastic target acquisition and locking mechanisms.
+* **🛡️ Collision Avoidance:** Active altitude scanning algorithms to prevent mid-air crashes.
+* **🎯 Fire Control (FCS):** Weapon release protocols with embedded safety interlocks.
 
-## 💻 How to Run
+---
 
-### 1. Clone the Repository
-```bash
+## 🛠️ Technologies & Tools Used
+
+This project is built using core system programming tools to ensure performance and reliability.
+
+| Category | Technologies |
+| :--- | :--- |
+| **Core Language** | ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) |
+| **Compiler** | ![GCC](https://img.shields.io/badge/gcc-%23FFD43B.svg?style=for-the-badge&logo=gnu&logoColor=222222) |
+| **Version Control** | ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) |
+| **Documentation** | ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white) ![Mermaid JS](https://img.shields.io/badge/Mermaid-FF3E00?style=for-the-badge&logo=mermaid&logoColor=white) |
+| **Environment** | ![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white) ![Linux Shell](https://img.shields.io/badge/Shell_Script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white) |
+
+---
+
+## 📐 System Logic & Architecture
+
+The following diagram illustrates the core decision-making loop of the software, highlighting the **Safety Interlocks** and the **Data Logging** layer.
+
+```mermaid
+graph TD
+    Start((Start)) --> Menu{Main Menu}
+    
+    %% Radar & ISR Logic
+    Menu -- "8. Radar Scan" --> Radar[Stochastic Sensor Scan]
+    Radar -- Target Found --> Lock[State: TARGET LOCKED]
+    Radar -- Scan Empty --> Unlock[State: NO TARGET]
+    
+    %% Fire Control Logic
+    Menu -- "5. Fire Mission" --> CheckLock{Target Locked?}
+    CheckLock -- YES --> Fire[Fire Missile & Update Ammo]
+    CheckLock -- NO --> Deny[⛔ Safety Lock Engaged]
+    
+    %% Navigation & Collision Logic
+    Menu -- "3/4. Altitude" --> ColCheck{Collision Check}
+    ColCheck -- Safe --> Move[Update Altitude & Fuel]
+    ColCheck -- Risk --> Block[⛔ Collision Warning]
+    
+    %% Logging Layer
+    Fire -.-> Log[💾 Write to ucus_kayitlari.txt]
+    Move -.-> Log
+    Lock -.-> Log
+    
+    Menu -- "0. Exit" --> Stop((Terminate))
+    
+    style Log fill:#f9f,stroke:#333,stroke-width:2px,color:#000
+    style Deny fill:#ffcccc,stroke:#ff0000,stroke-width:2px
+    style Block fill:#ffcccc,stroke:#ff0000,stroke-width:2px
+⚙️ Installation
+Prerequisites
+You need a standard C compiler (like GCC) installed on your system.
+
+1. Clone the Repository
+Open your terminal and clone the project files:
+
+Bash
 git clone [https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git](https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git)
 cd UAV-Fleet-Command-CLI
-2. Compile
-You can use any GCC compiler.
+2. Compile the Code
+Compile the source code using GCC:
 
 Bash
 gcc main.c -o uav_system
-3. Execute
-Bash
-# For Windows
-uav_system.exe
+🎮 Usage
+Running the Application
+For Windows:
 
-# For Linux/Mac
+Bash
+uav_system.exe
+For Linux / macOS:
+
+Bash
 ./uav_system
-📊 Simulation Preview
+Controls
+The system uses a numeric menu interface.
+
+1 Switch UAV: Cycle control between TB2, AKINCI, and AKSUNGUR.
+
+3 Ascend: Increase altitude by 1000m (Consumes Fuel).
+
+5 FIRE MISSION: Launch ammunition (Requires Radar Lock).
+
+8 RADAR SCAN: Scan the sector for targets (Required before firing).
+
+0 Exit: Close the simulation and save the Black Box logs.
+
+🖥️ Example Output / Screenshot
+When you run the system, the CLI provides visual feedback (ASCII Art) and real-time telemetry.
+
 Plaintext
-=== UAV FLEET COMMAND SYSTEM (V3.3) ===
+=== UAV FLEET COMMAND SYSTEM (V3.3 - BLACK BOX) ===
+
        | 
    ---=|=---
     \_|^|_/    
@@ -58,55 +121,33 @@ Plaintext
 
 Selected UAV: AKINCI (Altitude: 5000m | Ammo: 8) [KILITLI]
 ---------------------------------------
+1. IHA Degistir
+2. Durum Raporu
 ...
-8. RADAR SCAN (Target Acquisition)
+8. RADAR TARAMASI (ISR Scan)
 
+Seciminiz: 8
+
+[RADAR] Bolge taraniyor... Sinyal araniyor...
 !!! TESPIT: Dusman zirhli araci tespit edildi! Kordinatlar kilitlendi. !!!
+
+Seciminiz: 5
+
+*** HEDEF KILITLENDI... FUSELAGE RELEASED ***
 >>> AKINCI, 1 adet MAM-C fuzesi atisladi! HEDEF IMHA EDILDI. <<<
+📼 Black Box Log Output
+Content of the automatically generated ucus_kayitlari.txt:
 
-[INFO] Event logged to ucus_kayitlari.txt
-📐 System Architecture (Logic Flow)
-The following diagram illustrates the core logic loop, including the new Data Logging layer.
+Plaintext
+[03-02-2026 14:30:10] [SISTEM] UAV Fleet Command System V3.3 Baslatildi.
+[03-02-2026 14:31:05] [RADAR] AKINCI RADAR HEDEF TESPIT ETTI.
+[03-02-2026 14:31:12] [ATIS] AKINCI MAM-C ATISLADI. Hedef Vuruldu.
+👨‍💻 Author
+<div align="center">
 
-Kod snippet'i
-graph TD
-    A[Start System] --> B{Select Action}
-    B -->|Option 1| C[Switch Active UAV]
-    C --> V[Draw ASCII Art]
-    B -->|Option 3/4| D{Collision Check?}
-    D -- Yes --> E[Block Movement]
-    D -- No --> F[Update Altitude & Fuel]
-    B -->|Option 5| G{Target Locked?}
-    G -- No --> H[Safety Lock Active]
-    G -- Yes --> I[Fire Control System]
-    I --> J{Ammo Check}
-    J -- Has Ammo --> K[Fire Missile & Reset Lock]
-    J -- Empty --> L[Warning: Out of Ammo]
-    B -->|Option 8| M[Radar Scan logic]
-    M --> N[Random Probability %50]
-    
-    %% Logging Layer
-    F -.-> Z[Write to ucus_kayitlari.txt]
-    K -.-> Z
-    L -.-> Z
-    N -.-> Z
-🗺️ Roadmap
-[x] Multi-UAV Architecture (Struct Arrays)
+Ahmet Can
 
-[x] Basic Flight Controls & Telemetry
-
-[x] Collision Avoidance System
-
-[x] Fire Control System (FCS)
-
-[x] Radar & ISR System
-
-[x] Data Logging: Saving flight logs to .txt files (Black Box simulation).
-
-[ ] Autonomous Patrol Mode: Auto-pilot features for loitering missions.
-
-🤝 Contributing
-Contributions are welcome! Please open an issue or submit a pull request for any improvements.
+</div>
 
 📄 License
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
