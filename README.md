@@ -1,52 +1,62 @@
-Anladım komutanım, paylaştığın metin projenin eski versiyonuna (V3.0 civarı) ait. Dikkat edersen "Roadmap" kısmında "Collision Avoidance" ve "Data Logging" özellikleri henüz yapılmamış ([ ]) görünüyor. Oysa biz bunları bitirdik! ✅
-
-Bizim amacımız bu eski dosyayı, V3.3 özelliklerini (Kara Kutu, Radar, Şema) içeren yeni ve profesyonel haliyle değiştirmek.
-
-Hatayı düzeltmek ve güncellemeyi yapmak için sırayla şu adımları izle:
-
-1. Doğru Klasöre Gir 📂
-Az önceki hatanın sebebi yanlış yerde olmandı. Terminale şunu yazarak proje klasörünün içine gir:
-
-PowerShell
-cd UAV-Fleet-Command-CLI
-(Eğer hata verirse dir yazıp klasör ismini kontrol et, oradaki isme göre cd yap)
-
-2. Dosyayı Güncelle 📝
-Şimdi README.md dosyasını aç, içindeki o eski metni tamamen sil ve aşağıda hazırladığım V3.3 Final (Şemalı & İngilizce) metni yapıştırıp kaydet.
-
-Markdown
 # 🚁 UAV Fleet Command System (CLI)
 
-![Language](https://img.shields.io/badge/Language-C-blue) ![Platform](https://img.shields.io/badge/Platform-Windows%2FLinux-lightgrey) ![License](https://img.shields.io/badge/License-MIT-green) ![Version](https://img.shields.io/badge/Version-V3.3-orange)
+<div align="center">
+  <img src="https://dummyimage.com/1200x400/000/fff&text=UAV+Fleet+Command+System+-+V3.3" alt="Project Banner" width="100%" />
+  <br/><br/>
+
+  ![Language](https://img.shields.io/badge/Language-C-blue?style=for-the-badge&logo=c)
+  ![Platform](https://img.shields.io/badge/Platform-Windows%20%2F%20Linux-lightgrey?style=for-the-badge&logo=linux)
+  ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+  ![Version](https://img.shields.io/badge/Version-V3.3%20(Black%20Box)-orange?style=for-the-badge)
+</div>
+
+---
 
 ## 🎯 Project Purpose
-**UAV Fleet Command System** is a C-based simulation designed to demonstrate the logic behind a **Ground Control Station (GCS)**. The primary goal is to simulate the tactical management of a mixed UAV swarm (**TB2, AKINCI, AKSUNGUR**) in a terminal environment.
+**UAV Fleet Command System** is a sophisticated C-based simulation designed to demonstrate the engineering logic behind a real-world **Ground Control Station (GCS)**. The primary goal is to simulate the tactical management of a mixed UAV swarm (**TB2, AKINCI, AKSUNGUR**) in a high-stakes terminal environment.
 
-It simulates critical aerospace software functions:
-* **Black Box (Flight Recorder):** Persistent logging of mission data to text files.
-* **ISR & Radar Logic:** Stochastic target acquisition and locking mechanisms.
-* **Collision Avoidance:** Active altitude scanning to prevent mid-air crashes.
-* **Fire Control (FCS):** Weapon release protocols based on safety locks.
+It goes beyond simple flight simulation by implementing critical aerospace software functions:
+* **📼 Black Box (Flight Recorder):** Persistent logging of mission telemetry to local files.
+* **📡 ISR & Radar Logic:** Stochastic target acquisition and locking mechanisms.
+* **🛡️ Collision Avoidance:** Active altitude scanning algorithms to prevent mid-air crashes.
+* **🎯 Fire Control (FCS):** Weapon release protocols with embedded safety interlocks.
 
-### 📐 System Logic & Architecture
-The following diagram illustrates the core decision-making loop of the software, including the **Safety Interlocks** and **Data Logging** layer.
+---
+
+## 🛠️ Technologies & Tools Used
+
+This project is built using core system programming tools to ensure performance and reliability.
+
+| Category | Technologies |
+| :--- | :--- |
+| **Core Language** | ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) |
+| **Compiler** | ![GCC](https://img.shields.io/badge/gcc-%23FFD43B.svg?style=for-the-badge&logo=gnu&logoColor=222222) |
+| **Version Control** | ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) |
+| **Documentation** | ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white) ![Mermaid JS](https://img.shields.io/badge/Mermaid-FF3E00?style=for-the-badge&logo=mermaid&logoColor=white) |
+| **Environment** | ![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white) ![Linux Shell](https://img.shields.io/badge/Shell_Script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white) |
+
+---
+
+## 📐 System Logic & Architecture
+
+The following diagram illustrates the core decision-making loop of the software, highlighting the **Safety Interlocks** and the **Data Logging** layer.
 
 ```mermaid
 graph TD
     Start((Start)) --> Menu{Main Menu}
     
     %% Radar & ISR Logic
-    Menu -- 8. Radar Scan --> Radar[Stochastic Sensor Scan]
+    Menu -- "8. Radar Scan" --> Radar[Stochastic Sensor Scan]
     Radar -- Target Found --> Lock[State: TARGET LOCKED]
     Radar -- Scan Empty --> Unlock[State: NO TARGET]
     
     %% Fire Control Logic
-    Menu -- 5. Fire Mission --> CheckLock{Target Locked?}
+    Menu -- "5. Fire Mission" --> CheckLock{Target Locked?}
     CheckLock -- YES --> Fire[Fire Missile & Update Ammo]
     CheckLock -- NO --> Deny[⛔ Safety Lock Engaged]
     
     %% Navigation & Collision Logic
-    Menu -- 3/4. Altitude --> ColCheck{Collision Check}
+    Menu -- "3/4. Altitude" --> ColCheck{Collision Check}
     ColCheck -- Safe --> Move[Update Altitude & Fuel]
     ColCheck -- Risk --> Block[⛔ Collision Warning]
     
@@ -55,10 +65,14 @@ graph TD
     Move -.-> Log
     Lock -.-> Log
     
-    Menu -- 0. Exit --> Stop((Terminate))
+    Menu -- "0. Exit" --> Stop((Terminate))
+    
+    style Log fill:#f9f,stroke:#333,stroke-width:2px,color:#000
+    style Deny fill:#ffcccc,stroke:#ff0000,stroke-width:2px
+    style Block fill:#ffcccc,stroke:#ff0000,stroke-width:2px
 ⚙️ Installation
 Prerequisites
-You need a C compiler (GCC) installed on your system.
+You need a standard C compiler (like GCC) installed on your system.
 
 1. Clone the Repository
 Open your terminal and clone the project files:
@@ -82,7 +96,7 @@ For Linux / macOS:
 Bash
 ./uav_system
 Controls
-The system uses a numeric menu interface. Enter the number corresponding to the action:
+The system uses a numeric menu interface.
 
 1 Switch UAV: Cycle control between TB2, AKINCI, and AKSUNGUR.
 
@@ -121,9 +135,19 @@ Seciminiz: 5
 
 *** HEDEF KILITLENDI... FUSELAGE RELEASED ***
 >>> AKINCI, 1 adet MAM-C fuzesi atisladi! HEDEF IMHA EDILDI. <<<
-Black Box Log Output (ucus_kayitlari.txt):
+📼 Black Box Log Output
+Content of the automatically generated ucus_kayitlari.txt:
 
 Plaintext
 [03-02-2026 14:30:10] [SISTEM] UAV Fleet Command System V3.3 Baslatildi.
 [03-02-2026 14:31:05] [RADAR] AKINCI RADAR HEDEF TESPIT ETTI.
 [03-02-2026 14:31:12] [ATIS] AKINCI MAM-C ATISLADI. Hedef Vuruldu.
+👨‍💻 Author
+<div align="center">
+
+Ahmet Can
+
+</div>
+
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
