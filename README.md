@@ -18,7 +18,7 @@ Markdown
   ![Version](https://img.shields.io/badge/Version-V3.3%20(Black%20Box)-orange?style=for-the-badge)
 </div>
 
----
+
 
 ## 🎯 Project Purpose
 **UAV Fleet Command System** is a sophisticated C-based simulation designed to demonstrate the engineering logic behind a real-world **Ground Control Station (GCS)**. The primary goal is to simulate the tactical management of a mixed UAV swarm (**TB2, AKINCI, AKSUNGUR**) in a high-stakes terminal environment.
