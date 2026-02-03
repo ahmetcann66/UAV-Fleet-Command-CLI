@@ -1,7 +1,15 @@
+Hata görselini yakaladım komutanım! 🚨
+
+Mermaid diyagramında "Lexical error" vermesinin sebebi, kod bloğunu kapatan tırnakların (```) arada kaynamış olması veya bir alt satıra geçmemesi. Şemayı düzeltip, istediğin o havalı Teknoloji Rozetlerini (Badges) ve Görsel Düzeni ekleyerek sana V3.3 Final (Fix) versiyonunu hazırladım.
+
+Bunu yapıştırınca hem hata gidecek hem de o tablo ve rozetler efsane duracak.
+
+📄 README.md (Kopyala/Yapıştır - Düzeltilmiş Versiyon)
+Markdown
 # 🚁 UAV Fleet Command System (CLI)
 
 <div align="center">
-  <img src="https://dummyimage.com/1200x400/000/fff&text=UAV+Fleet+Command+System+-+V3.3" alt="Project Banner" width="100%" />
+  <img src="[https://dummyimage.com/1200x400/000/fff&text=UAV+Fleet+Command+System+-+V3.3](https://dummyimage.com/1200x400/000/fff&text=UAV+Fleet+Command+System+-+V3.3)" alt="Project Banner" width="100%" />
   <br/><br/>
 
   ![Language](https://img.shields.io/badge/Language-C-blue?style=for-the-badge&logo=c)
@@ -78,7 +86,7 @@ You need a standard C compiler (like GCC) installed on your system.
 Open your terminal and clone the project files:
 
 Bash
-git clone [https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git](https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git)
+git clone https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git
 cd UAV-Fleet-Command-CLI
 2. Compile the Code
 Compile the source code using GCC:
