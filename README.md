@@ -1,183 +1,139 @@
-🚁 UAV Fleet Command System (CLI)
-V3.3 – BLACK BOX EDITION
-<div align="center"> <img src="https://dummyimage.com/1200x420/0b0f19/ffffff&text=UAV+Fleet+Command+System+%7C+V3.3+Black+Box+Edition" width="100%" />
+# 🚁 UAV Fleet Command System (CLI)
 
-<br/><br/>
+<div align="center">
+  <img src="https://dummyimage.com/1200x400/000/fff&text=UAV+Fleet+Command+System+-+V3.4" alt="Project Banner" width="100%" />
+  <br/><br/>
 
-
-
-
-
-
-
-
-
-
+  ![Language](https://img.shields.io/badge/Language-C-blue?style=for-the-badge&logo=c)
+  ![Platform](https://img.shields.io/badge/Platform-Windows%20%2F%20Linux-lightgrey?style=for-the-badge&logo=linux)
+  ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+  ![Version](https://img.shields.io/badge/Version-V3.4%20(Auto%20Pilot)-orange?style=for-the-badge)
 </div>
-📌 Overview
 
-UAV Fleet Command System is a C-based command-line simulation that models the core operational logic of a modern Ground Control Station (GCS) used in military UAV operations.
+---
 
-The project focuses on decision-making, safety interlocks, mission flow, and logging, rather than graphics — mirroring real-world defense and embedded software systems.
+## 🎯 Project Purpose
+**UAV Fleet Command System** is a sophisticated C-based simulation designed to demonstrate the engineering logic behind a real-world **Ground Control Station (GCS)**. The primary goal is to simulate the tactical management of a mixed UAV swarm (**TB2, AKINCI, AKSUNGUR**) in a high-stakes terminal environment.
 
-🎯 Project Objectives
+It goes beyond simple flight simulation by implementing critical aerospace software functions:
+* **🗺️ Autonomous Mission Planner:** Executes sequential tasks (waypoints) using **Linked Lists**.
+* **📼 Black Box (Flight Recorder):** Persistent logging of mission telemetry to local files.
+* **📡 ISR & Radar Logic:** Stochastic target acquisition and locking mechanisms.
+* **🛡️ Collision Avoidance:** Active altitude scanning algorithms to prevent mid-air crashes.
 
-Simulate multi-UAV fleet management
+---
 
-Demonstrate ISR, Fire Control & Safety logic
+## 🛠️ Technologies & Tools Used
 
-Implement Black Box–style mission logging
+This project is built using core system programming tools to ensure performance and reliability.
 
-Apply defensive programming principles
+| Category | Technologies |
+| :--- | :--- |
+| **Core Language** | ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) |
+| **Data Structures** | **Linked Lists**, **Struct Arrays**, **Pointers** |
+| **Memory Mgmt** | `malloc()`, `free()` (Dynamic Allocation) |
+| **Version Control** | ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) |
+| **Documentation** | ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white) ![Mermaid JS](https://img.shields.io/badge/Mermaid-FF3E00?style=for-the-badge&logo=mermaid&logoColor=white) |
 
-Serve as a portfolio-grade defense software project
+---
 
-🧠 Simulated UAV Platforms
-UAV	Role
-Bayraktar TB2	Tactical ISR / Precision Strike
-AKINCI TİHA	Heavy Strike / Deep Mission
-AKSUNGUR	Long-Endurance ISR
-🧩 Core Features
+## 📐 System Logic & Architecture
 
-📡 ISR & Radar Scan System
+The following diagram illustrates the core decision-making loop, including the new **Autonomous Mission Planner**.
 
-🎯 Fire Control System (FCS)
-
-🛡️ Collision Avoidance Logic
-
-⛔ Safety Interlocks
-
-📼 Black Box (Flight Recorder)
-
-🔁 Real-time UAV Switching
-
-⛽ Fuel & Ammunition Management
-
-🛠️ Technology Stack
-Category	Technologies
-Language	C
-Compiler	GCC
-Platform	Windows / Linux
-Version Control	Git, GitHub
-Documentation	Markdown
-Diagramming	Mermaid
-📐 System Architecture & Decision Flow
+```mermaid
 graph TD
-    Start((System Start)) --> Menu{Main Menu}
-
-    Menu -- Radar Scan --> Radar[ISR Sensor Scan]
-    Radar -- Target Found --> Lock[TARGET LOCKED]
-    Radar -- No Signal --> NoTarget[NO TARGET]
-
-    Menu -- Fire Mission --> CheckLock{Target Locked?}
-    CheckLock -- YES --> Fire[Missile Fired]
-    CheckLock -- NO --> Safety[⛔ Safety Interlock]
-
-    Menu -- Altitude Change --> Collision{Collision Risk?}
-    Collision -- SAFE --> Move[Altitude Updated]
-    Collision -- RISK --> Abort[⛔ Maneuver Blocked]
-
-    Fire -.-> Log[📼 Black Box Log]
-    Move -.-> Log
-    Lock -.-> Log
-
-    Menu -- Exit --> End((Shutdown))
-
-    style Log fill:#e6e6fa,stroke:#333,stroke-width:2px
-    style Safety fill:#ffcccc,stroke:#ff0000,stroke-width:2px
-    style Abort fill:#ffcccc,stroke:#ff0000,stroke-width:2px
-
-📂 Project Structure
-UAV-Fleet-Command-CLI/
-│
-├── main.c                # Core application logic
-├── ucus_kayitlari.txt    # Black Box flight logs (auto-generated)
-├── README.md             # Project documentation
-├── LICENSE               # MIT License
-
+    Start((Start)) --> Menu{Main Menu}
+    
+    %% Autonomous Logic
+    Menu -- "9. Mission Planner" --> Queue[Add Tasks to Linked List]
+    Queue --> Execute[Execute Mission Loop]
+    Execute --> Step{Next Node?}
+    Step -- Yes --> Action[Perform Task: Fly/Scan/Fire]
+    Action --> Wait[Simulate Delay]
+    Wait --> Free[Free Node Memory]
+    Free --> Step
+    Step -- No --> Done[Mission Complete]
+    
+    %% Manual Logic
+    Menu -- "Manual Control" --> Man[Manual Flight/Fire/Scan]
+    
+    %% Logging Layer
+    Action -.-> Log[💾 Write to Black Box .txt]
+    Man -.-> Log
+    
+    Menu -- "0. Exit" --> Stop((Terminate))
+    
+    style Queue fill:#ccf,stroke:#333,stroke-width:2px
+    style Execute fill:#ccf,stroke:#333,stroke-width:2px
 ⚙️ Installation
 Prerequisites
+You need a standard C compiler (like GCC) installed on your system.
 
-GCC or any standard C compiler
+1. Clone the Repository
+Open your terminal and clone the project files:
 
-Windows or Linux terminal
-
-Clone Repository
-git clone https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git
+Bash
+git clone [https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git](https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git)
 cd UAV-Fleet-Command-CLI
+2. Compile the Code
+Compile the source code using GCC:
 
-Compile
+Bash
 gcc main.c -o uav_system
-
 🎮 Usage
-Run Application
+Running the Application
+For Windows:
 
-Windows
-
+Bash
 uav_system.exe
+For Linux / macOS:
 
-
-Linux / macOS
-
+Bash
 ./uav_system
+Controls
+1 Switch UAV: Cycle control between TB2, AKINCI, and AKSUNGUR.
 
-🎛️ Control Menu
-Key	Function
-1	Switch UAV
-2	Status Report
-3	Ascend
-4	Descend
-5	Fire Mission
-8	Radar Scan (ISR)
-0	Exit System
-🖥️ Sample CLI Output
-=== UAV FLEET COMMAND SYSTEM | V3.3 BLACK BOX ===
+5 FIRE MISSION: Launch ammunition (Requires Radar Lock).
 
-       |
-   ---=|=---
-    \_|^|_/
-     AKINCI
+8 RADAR SCAN: Scan the sector for targets.
 
-UAV: AKINCI | ALT: 5000m | AMMO: 8 | STATUS: LOCKED
------------------------------------------------
-[RADAR] Target detected and locked.
-[FIRE] MAM-C missile launched.
-[HIT] Target neutralized.
+9 MISSION PLANNER: Create an autonomous flight path.
 
-📼 Black Box Log Example
+Add waypoints (Ascend, Descend, Scan, Fire) to the queue.
 
-ucus_kayitlari.txt
+Execute the chain automatically.
 
-[03-02-2026 14:30:10] SYSTEM STARTED
-[03-02-2026 14:31:05] RADAR TARGET LOCKED (AKINCI)
-[03-02-2026 14:31:12] FIRE MISSION SUCCESSFUL
+0 Exit: Close simulation and save logs.
 
-🛣️ Roadmap (Next Versions)
+🖥️ Example Output
+Plaintext
+=== UAV FLEET COMMAND (V3.4 - AUTO PILOT) ===
+...
+Secim: 9
 
-🔄 V4.0 Modular Code Architecture
+--- GOREV PLANLAYICI (Kuyruk Olustur) ---
+1. Yuksel Ekle
+2. Alcal Ekle
+3. Tara Ekle
+...
+Secim: 5 (BASLAT)
 
-🛰️ Sensor Fusion Logic
+>>> OTONOM GOREV MODU BASLATILIYOR <<<
 
-📡 Data-Link Simulation
+--- Gorev Adimi 1 Isleniyor ---
+[AUTO] Yukselis komutu...
+Irtifa: 1000m
 
-🧠 AI-Based Target Priority
-
-🖥️ GUI (Optional)
-
-🤝 Contribution
-
-Contributions, suggestions, and improvements are welcome.
-Fork the repository and submit a pull request.
-
+--- Gorev Adimi 2 Isleniyor ---
+[AUTO] Radar Taramasi...
+[RADAR] Bolge taraniyor...
 👨‍💻 Author
 <div align="center">
 
-Ahmet Can BOZKURT
-🎓 Information Systems & Technologies – 3rd Year
-🛡️ Defense, UAV & Embedded Systems Enthusiast
+Ahmet Can
 
 </div>
-📄 License
 
-This project is licensed under the MIT License.
-See the LICENSE file for details.
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
