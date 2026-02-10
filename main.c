@@ -53,6 +53,30 @@ void logKaydet(char* tur, char* detay) {
     fclose(fp);
 }
 
+void gorevKaydet() {
+    FILE *fp = fopen("mission_data.dat", "wb");
+    if (fp == NULL) {
+        printf("HATA: Kayit dosyasi olusturulamadi!\n");
+        return;
+    }
+    fwrite(filo, sizeof(struct IHA), 3, fp);
+    fclose(fp);
+    printf(">>> TUM GOREV VERILERI BASARIYLA KAYDEDILDI (Binary) <<<\n");
+    logKaydet("SAVE", "Gorev durumu mission_data.dat dosyasina kaydedildi.");
+}
+
+void gorevYukle() {
+    FILE *fp = fopen("mission_data.dat", "rb");
+    if (fp == NULL) {
+        printf("HATA: Kayitli gorev bulunamadi!\n");
+        return;
+    }
+    fread(filo, sizeof(struct IHA), 3, fp);
+    fclose(fp);
+    printf(">>> ESKI GOREV VERILERI YUKLENDI <<<\n");
+    logKaydet("LOAD", "Gorev durumu dosyadan geri yuklendi.");
+}
+
 void gorevEkle(int id) {
     struct GorevNode *yeniGorev = (struct GorevNode*) malloc(sizeof(struct GorevNode));
     yeniGorev->islemID = id;
@@ -204,7 +228,7 @@ void gorevleriCalistir() {
 
 int main() {
     srand(time(NULL));
-    logKaydet("SISTEM", "Sistem baslatildi (V3.4).");
+    logKaydet("SISTEM", "Sistem baslatildi (V4.0).");
     
     strcpy(filo[0].Model, "TB2"); filo[0].yakit=100; filo[0].irtifa=0; filo[0].muhimmat=4; 
     strcpy(filo[1].Model, "AKINCI"); filo[1].yakit=85; filo[1].irtifa=5000; filo[1].muhimmat=8; 
@@ -212,7 +236,7 @@ int main() {
 
     int secim;
     while (1) {
-        printf("\n=== UAV FLEET COMMAND (V3.4 - AUTO PILOT) ===\n");
+        printf("\n=== UAV FLEET COMMAND (V4.0 - PERSISTENCE) ===\n");
         printf("Secili: %s (Alt: %dm | Ammo: %d)\n", filo[seciliIHA].Model, filo[seciliIHA].irtifa, filo[seciliIHA].muhimmat);
         printf("---------------------------------------\n");
         printf("1. IHA Degistir\n");
@@ -223,7 +247,9 @@ int main() {
         printf("6. Filo Durumu\n");
         printf("7. Bakim\n");
         printf("8. RADAR\n");
-        printf("9. GOREV PLANLAYICI (Linked List)\n");
+        printf("9. GOREV PLANLAYICI (Auto)\n");
+        printf("10. GOREV KAYDET (Save)\n");
+        printf("11. GOREV YUKLE (Load)\n");
         printf("0. Cikis\n");
         printf("Secim: ");
         scanf("%d", &secim);
@@ -263,6 +289,9 @@ int main() {
                     else { printf("Gecersiz. Tekrar: "); }
                 }
                 break;
+
+            case 10: gorevKaydet(); break;
+            case 11: gorevYukle(); break;
 
             case 0: return 0;
         } 
