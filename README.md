@@ -66,6 +66,7 @@ graph TD
     
     style Queue fill:#ccf,stroke:#333,stroke-width:2px
     style Execute fill:#ccf,stroke:#333,stroke-width:2px
+```
 ⚙️ Installation
 Prerequisites
 You need a standard C compiler (like GCC) installed on your system.
