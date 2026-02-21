@@ -73,13 +73,13 @@ You need a standard C compiler (like GCC) installed on your system.
 
 1. Clone the Repository
 Open your terminal and clone the project files:
-
+```
 Bash
 git clone [https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git](https://github.com/ahmetcann66/UAV-Fleet-Command-CLI.git)
 cd UAV-Fleet-Command-CLI
-2. Compile the Code
+3. Compile the Code
 Compile the source code using GCC:
-
+```
 Bash
 gcc main.c -o uav_system
 🎮 Usage
